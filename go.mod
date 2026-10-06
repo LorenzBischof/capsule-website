@@ -1,4 +1,4 @@
-module github.com/google/docsy-example
+module github.com/projectcapsule/website
 
 go 1.21.6
 
