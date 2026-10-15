@@ -53,6 +53,7 @@ params:
     name: Clastix
     link: https://clastix.io
   ui:
+    showLightDarkModeMenu: true
     breadcrumb_disable: true
     navbar_logo: true
     navbar_translucent_over_cover_disable: false

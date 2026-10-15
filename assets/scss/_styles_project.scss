@@ -1,3 +1,76 @@
+// Dark mode. Bootstrap flips its own tokens under [data-bs-theme], so the rest
+// of this file follows for free once the palette below is in brand colours.
+
+// Brand purple as a foreground. #280C53 is a background colour -- on a dark
+// page it is too close to the ground to read -- so it is lightened there.
+$brand-fg-dark: scale-color($primary, $lightness: 78%);
+
+// What the dark surfaces are mixed from: $primary with most of its saturation
+// taken out, so the page reads as near-black with a purple cast, not as purple.
+$dark-ground: desaturate($primary, 55%);
+$dark-surface: mix($dark-ground, #000, 28%);
+
+:root {
+  --capsule-brand-fg: var(--bs-primary, #280c53);
+  --capsule-brand-fg-rgb: var(--bs-primary-rgb, 40, 12, 83);
+}
+
+[data-bs-theme="dark"] {
+  // Bootstrap's dark ground is a neutral slate, which leaves the page reading
+  // as grey between a purple hero and a purple footer. Mix the three surface
+  // tokens off the brand instead and everything built on them follows.
+  --bs-body-bg: #{$dark-surface};
+  --bs-tertiary-bg: #{mix($dark-ground, #000, 58%)};
+  --bs-border-color: #{mix($dark-ground, #fff, 85%)};
+
+  // Bootstrap holds muted text at 75% of the body colour, which is dimmer than
+  // this ground wants. Everything using --bs-secondary-color lifts with it.
+  --bs-secondary-color: rgba(var(--bs-body-color-rgb), 0.9);
+
+  --capsule-brand-fg: #{$brand-fg-dark};
+  --capsule-brand-fg-rgb: #{to-rgb($brand-fg-dark)};
+
+  // Bootstrap tints links off $primary as well, which lands at 4.2:1 on the
+  // ground above. Send them through the same token and they clear AA.
+  --bs-link-color-rgb: var(--capsule-brand-fg-rgb);
+  --bs-link-hover-color-rgb: 255, 255, 255;
+
+  // Outline buttons are compiled from $primary and $secondary too, so their rim
+  // and label come out near-black. Their hover fill is already white-on-brand.
+  .btn-outline-primary,
+  .btn-outline-secondary {
+    --bs-btn-color: var(--capsule-brand-fg);
+    --bs-btn-border-color: var(--capsule-brand-fg);
+  }
+
+  // The hero photo is the same in both themes, so on this ground it reads as
+  // the brightest thing on the page. Tinting it with the ground rather than
+  // $primary takes brightness out instead of adding purple.
+  body.td-home .td-overlay--dark::after {
+    background-color: rgba($dark-surface, 0.55);
+  }
+
+  // Docsy's box-variant() mixin compiles blocks/section's background and link
+  // colours to literal values, so the homepage bands do not follow the theme.
+  .td-box--white {
+    background-color: var(--bs-body-bg);
+  }
+
+  .td-box--200 {
+    background-color: var(--bs-tertiary-bg);
+  }
+
+  .td-box--white,
+  .td-box--200 {
+    color: var(--bs-body-color);
+
+    p > a,
+    span > a {
+      color: var(--capsule-brand-fg);
+    }
+  }
+}
+
 
   .section-resources {
     .section-label {
@@ -48,7 +121,7 @@
 
   &__summary {
     > div > p:first-child {
-      color: var(--bs-primary, #280c53);
+      color: var(--capsule-brand-fg);
       font-size: 0.75rem;
       letter-spacing: 0.09em;
     }
@@ -107,7 +180,7 @@
 
   &:hover,
   &:focus-within {
-    border-color: rgba(var(--bs-primary-rgb, 40, 12, 83), 0.45);
+    border-color: rgba(var(--capsule-brand-fg-rgb), 0.45);
     box-shadow: 0 0.8rem 2rem rgba(30, 45, 60, 0.14);
     transform: translateY(-3px);
 
@@ -144,8 +217,8 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: var(--bs-primary, #280c53);
-    background: rgba(var(--bs-primary-rgb, 40, 12, 83), 0.1);
+    color: var(--capsule-brand-fg);
+    background: rgba(var(--capsule-brand-fg-rgb), 0.1);
     font-size: inherit;
     font-weight: 600;
   }
@@ -634,7 +707,7 @@ body.td-home .td-cover-block {
 // colour. An alternative is not a straw man: its icon stays as quiet as the
 // prose, and the one case Capsule does not cover is named in the line below.
 .home-features {
-  --home-card-icon: var(--bs-primary, #280c53);
+  --home-card-icon: var(--capsule-brand-fg);
 }
 
 .home-alternatives {
@@ -906,7 +979,7 @@ body.td-home .td-cover-block {
   }
 
   &:focus-visible {
-    outline: 2px solid var(--bs-primary, #280c53);
+    outline: 2px solid var(--capsule-brand-fg);
     outline-offset: 4px;
   }
 
@@ -1039,7 +1112,7 @@ body.td-home .td-cover-block {
     }
 
     .home-ecosystem__name {
-      color: var(--bs-primary, #280c53);
+      color: var(--capsule-brand-fg);
       text-decoration: underline;
       text-underline-offset: 0.2em;
     }
